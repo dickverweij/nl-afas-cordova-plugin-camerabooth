@@ -22,7 +22,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 #import <Cordova/CDV.h>
-#import "CamaraBoothViewController.h"
+#import "CameraBoothViewController.h"
 
 
 @interface CameraBooth : CDVPlugin{

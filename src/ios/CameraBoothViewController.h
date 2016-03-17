@@ -23,7 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
 
-typedef void(^CompletionBlock)(NString * base64Data);
+typedef void(^CompletionBlock)(NSMutableArray * images);
 
 @interface CameraBoothViewController : UIViewController{
 	NSMutableArray * pictures;
@@ -35,6 +35,7 @@ typedef void(^CompletionBlock)(NString * base64Data);
 @property (retain, nonatomic) IBOutlet UILabel *label;
 @property (retain, nonatomic) IBOutlet UIView  *cameraView;
 @property (retain, nonatomic) IBOutlet UIImageView  *imageView;
+
 
 @end
 

@@ -1,6 +1,6 @@
 {
   "name": "nl-afas-cordova-plugin-camerabooth",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Camera photo-booth plugin, shows preview and after counting down takes a number of pictures",
   "cordova": {
     "id": "nl-afas-cordova-plugin-camerabooth",

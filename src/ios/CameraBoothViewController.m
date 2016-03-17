@@ -22,13 +22,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 #import "CameraBoothViewController.h"
-@import AVFoundation;
-@import QuartzCore;
-@import ImageIO;
+#import <AVFoundation/AVFoundation.h>
+#import <QuartzCore/QuartzCore.h>
+#import <ImageIO/ImageIO.h>
 
 @implementation CameraBoothViewController
 
 @synthesize label,cameraView,imageView,completion;
+
 
 - (AVCaptureDevice *)frontCamera {
     NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
@@ -134,7 +135,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				}
                 
 				[session stopRunning];
-				[captureVideoPreviewLayer removeFromSuperLayer];
+				[captureVideoPreviewLayer removeFromSuperlayer];
 				self.completion(self->pictures);
             }];
         }];
@@ -145,6 +146,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.    
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

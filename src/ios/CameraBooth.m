@@ -28,22 +28,24 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 - (void) start:(CDVInvokedUrlCommand*)command {
-    CameraBoothViewController * vc = [[CameraBoothViewController alloc] init];
-    vc.storyboard = [UIStoryboard storyboardWithName:@"CameraBooth" bundle:nil];
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"CameraBooth" bundle:nil];
+    
+    CameraBoothViewController * vc  = (CameraBoothViewController *)[storyboard instantiateInitialViewController];
 
+    
 	vc.numberOfPicturesToTake = [command.arguments[0] intValue];
 	if (vc.numberOfPicturesToTake < 1 || vc.numberOfPicturesToTake > 9) {
 		vc.numberOfPicturesToTake = 1;
 	}
 
-	vc.completion = ^(NSString * base64Data){
-			CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK message:base64Data];
+	vc.completion = ^(NSMutableArray * images){
+			CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_OK messageAsArray:images];
 			[pluginResult setKeepCallback: [NSNumber numberWithBool:NO]];
 			[self.commandDelegate sendPluginResult:pluginResult callbackId: command.callbackId];
 		};
 
-	[self.viewController presentViewController: vc  animated:YES completion:nil];
-	
+    [self.viewController presentViewController: vc animated:YES completion:nil];
+    
 	CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_NO_RESULT];
     [pluginResult setKeepCallback: [NSNumber numberWithBool:YES]];
     [self.commandDelegate sendPluginResult:pluginResult callbackId: command.callbackId];
