@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="nl-afas-cordova-plugin-camerabooth" version="0.0.1">
+
+    <name>CameraBooth</name>
+    <description>Camera photo-booth plugin, shows preview and after counting down takes a number of pictures</description>
+    <license>MIT</license>
+
+    <engines>
+        <engine name="cordova" version=">=3.0.0" />
+    </engines>
+
+    <js-module src="www/plugins.cameraBooth.js" name="CameraBooth">
+        <clobbers target="cordova.plugins.CameraBooth" />
+    </js-module>
+
+    <!-- iOS -->
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="CameraBooth">
+                <param name="ios-package" value="CameraBooth" />
+            </feature>
+        </config-file>
+        <source-file src="src/ios/CameraBooth.m" />        
+        <header-file src="src/ios/CameraBooth.h" />
+        <source-file src="src/ios/CameraBoothViewController.m" />
+        <header-file src="src/ios/CameraBoothViewController.h" />
+        <resource-file src="src/ios/CameraBooth.storyboard" />
+
+      <framework src="CoreVideo.framework" />
+      <framework src="CoreMedia.framework" />
+      <framework src="AvFoundation.framework" />
+      <framework src="ImageIO.framework" />
+      <framework src="QuartzCore.framework" />    
+    </platform>
+
+	
+</plugin>
