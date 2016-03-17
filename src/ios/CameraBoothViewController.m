@@ -69,7 +69,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
              NSLog(@"no attachments");
          
          NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
-         [self completion] ([imageData base64EncodedStringWithOptions: NSDataBase64Encoding64CharacterLineLength]);
+         [self->pictures addObject:[imageData base64EncodedStringWithOptions: NSDataBase64Encoding64CharacterLineLength]];
      }];
 }
 
@@ -95,9 +95,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 }
 
 - (void)viewDidAppear:(BOOL)animated{
-    
- 
-    
+         
     AVCaptureSession *session = [[AVCaptureSession alloc] init];
     session.sessionPreset = AVCaptureSessionPresetMedium;
     
@@ -126,10 +124,18 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     
     [session startRunning];
     
+	self->pictures = [NSMutableArray arrayWithCapacity: self.numberOfPicturesToTake];
+
     [self countDown: @"3" completion:^() {
         [self countDown: @"2" completion:^() {
             [self countDown: @"1" completion:^() {
-                [self takePicture:stillImageOutput];
+				for (int currentPicture = 0; currentPicture < self.numberOfPicturesToTake; currentPicture++) {
+					[self takePicture:stillImageOutput];
+				}
+                
+				[session stopRunning];
+				[captureVideoPreviewLayer removeFromSuperLayer];
+				self.completion(self->pictures);
             }];
         }];
     }];

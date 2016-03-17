@@ -25,9 +25,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 typedef void(^CompletionBlock)(NString * base64Data);
 
-@interface CameraBoothViewController : UIViewController
+@interface CameraBoothViewController : UIViewController{
+	NSMutableArray * pictures;
+}
 
 @property (nonatomic, copy) CompletionBlock completion;
+@property (nonatomic, assign) int numberOfPicturesToTake;
+
 @property (retain, nonatomic) IBOutlet UILabel *label;
 @property (retain, nonatomic) IBOutlet UIView  *cameraView;
 @property (retain, nonatomic) IBOutlet UIImageView  *imageView;
