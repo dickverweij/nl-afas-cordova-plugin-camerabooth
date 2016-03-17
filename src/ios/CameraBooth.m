@@ -44,6 +44,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			[self.commandDelegate sendPluginResult:pluginResult callbackId: command.callbackId];
 		};
 
+	vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self.viewController presentViewController: vc animated:YES completion:nil];
     
 	CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_NO_RESULT];

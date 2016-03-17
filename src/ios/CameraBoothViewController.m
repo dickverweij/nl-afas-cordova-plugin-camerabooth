@@ -41,37 +41,46 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     return nil;
 }
 
-- (void)takePicture:(AVCaptureStillImageOutput *)stillImageOutput {
+- (void)takePictures:(AVCaptureStillImageOutput *)stillImageOutput  completion: (void (^)()) completionCall {
     
-    AVCaptureConnection *videoConnection = nil;
-    for (AVCaptureConnection *connection in stillImageOutput.connections)
-    {
-        for (AVCaptureInputPort *port in [connection inputPorts])
-        {
-            if ([[port mediaType] isEqual:AVMediaTypeVideo] )
-            {
-                videoConnection = connection;
-                break;
-            }
-        }
-        if (videoConnection) { break; }
-    }
+	if (self->pictures.count < self.numberOfPicturesToTake) {
+	
+		AVCaptureConnection *videoConnection = nil;
+		for (AVCaptureConnection *connection in stillImageOutput.connections)
+		{
+			for (AVCaptureInputPort *port in [connection inputPorts])
+			{
+				if ([[port mediaType] isEqual:AVMediaTypeVideo] )
+				{
+					videoConnection = connection;
+					break;
+				}
+			}
+			if (videoConnection) { break; }
+		}
     
     
-    [stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler: ^(CMSampleBufferRef imageSampleBuffer, NSError *error)
-     {
-         CFDictionaryRef exifAttachments = CMGetAttachment( imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
-         if (exifAttachments)
-         {
-             // Do something with the attachments.
-             NSLog(@"attachements: %@", exifAttachments);
-         }
-         else
-             NSLog(@"no attachments");
+		[stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler: ^(CMSampleBufferRef imageSampleBuffer, NSError *error)
+		 {
+			 CFDictionaryRef exifAttachments = CMGetAttachment( imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
+			 if (exifAttachments)
+			 {
+				 // Do something with the attachments.
+				 NSLog(@"attachements: %@", exifAttachments);
+			 }
+			 else
+				 NSLog(@"no attachments");
          
-         NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
-         [self->pictures addObject:[imageData base64EncodedStringWithOptions: NSDataBase64Encoding64CharacterLineLength]];
-     }];
+			 NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
+			 [self->pictures addObject:[imageData base64EncodedStringWithOptions: NSDataBase64Encoding64CharacterLineLength]];
+			 [NSThread sleepForTimeInterval:1];
+
+			 [self takePictures:stillImageOutput completion:completionCall]
+		 }];
+	 }
+	 else {
+	     completionCall();
+	 }
 }
 
 - (void)countDown: (NSString *) labelText completion: (void (^)()) completionCall
@@ -127,18 +136,16 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     
 	self->pictures = [NSMutableArray arrayWithCapacity: self.numberOfPicturesToTake];
 
-    [self countDown: @"3" completion:^() {
-        [self countDown: @"2" completion:^() {
-            [self countDown: @"1" completion:^() {
-				for (int currentPicture = 0; currentPicture < self.numberOfPicturesToTake; currentPicture++) {
-					[self takePicture:stillImageOutput];
-				}
-                
-				[session stopRunning];
-				[captureVideoPreviewLayer removeFromSuperlayer];
-				[self dismissViewControllerAnimated:YES completion:nil];
-
-				self.completion(self->pictures);
+    [self countDown: @"3" completion:^{
+        [self countDown: @"2" completion:^{
+            [self countDown: @"1" completion:^{
+				[self takePictures:stillImageOutput completion:^{
+				                
+					[session stopRunning];
+					[captureVideoPreviewLayer removeFromSuperlayer];
+					[self dismissViewControllerAnimated:YES completion:nil];
+					self.completion(self->pictures);
+				}];
             }];
         }];
     }];
