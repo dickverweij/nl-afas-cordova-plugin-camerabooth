@@ -136,6 +136,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 
 				[session stopRunning];
 				[captureVideoPreviewLayer removeFromSuperlayer];
+				[self dismissViewControllerAnimated:YES completion:nil];
+
 				self.completion(self->pictures);
             }];
         }];
