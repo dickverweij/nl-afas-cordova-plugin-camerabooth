@@ -75,7 +75,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			 [self->pictures addObject:[imageData base64EncodedStringWithOptions: NSDataBase64Encoding64CharacterLineLength]];
 			 [NSThread sleepForTimeInterval:1];
 
-			 [self takePictures:stillImageOutput completion:completionCall]
+			 [self takePictures:stillImageOutput completion:completionCall];
 		 }];
 	 }
 	 else {
