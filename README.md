@@ -1,6 +1,7 @@
-Camera booth plugin
+Camera (photo)booth plugin
 ==========================
-Camera booth plugin, shows preview and after counting down takes a picture.
+Camera photo-booth plugin, 'CameraBooth'.. shows a preview and after counting down to 1 takes a number of pictures.
+
 
 Requirements
 -------------
